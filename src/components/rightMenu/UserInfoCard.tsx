@@ -55,12 +55,12 @@ const UserInfoCard = async ({ user }: { user: User }) => {
             <div className="flex justify-between items-center font-medium">
                 <span className='text-slate-600'>User Information</span>
                 {currentUserId === user.id ? (
-          <UpdateUser />
-        ) : (
-          <Link href="/" className="text-blue-500 text-xs">
-            See all
-          </Link>
-        )}
+                    <UpdateUser />
+                ) : (
+                    <Link href="/" className="text-blue-500 text-xs">
+                        See all
+                    </Link>
+                )}
             </div>
             {/* Bottom */}
             <div className="flex flex-col gap-4 text-slate-500">
@@ -84,7 +84,9 @@ const UserInfoCard = async ({ user }: { user: User }) => {
                 <div className="flex items-center justify-between">
                     {user.website && <div className="flex gap-1 items-center">
                         <Image src="/link.png" alt="alt" width={16} height={16} />
-                        <Link href={user.website} className='text-purple-500 font-medium'>{user.website}</Link>
+                        <Link href={`https://${user.website}`} className='text-purple-500 font-medium'>
+                            {user.website.length > 20 ? `${user.website.slice(0, 15)}...` : user.website}
+                        </Link>
                     </div>}
                     <div className="flex gap-1 items-center">
                         <Image src="/date.png" alt="alt" width={16} height={16} />
@@ -92,13 +94,13 @@ const UserInfoCard = async ({ user }: { user: User }) => {
                     </div>
                 </div>
                 {currentUserId && currentUserId !== user.id && (
-          <UserInfoCardInteraction
-            userId={user.id}
-            isUserBlocked={isUserBlocked}
-            isFollowing={isFollowing}
-            isFollowingSent={isFollowingSent}
-          />
-        )}
+                    <UserInfoCardInteraction
+                        userId={user.id}
+                        isUserBlocked={isUserBlocked}
+                        isFollowing={isFollowing}
+                        isFollowingSent={isFollowingSent}
+                    />
+                )}
             </div>
         </div>
     );
