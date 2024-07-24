@@ -12,6 +12,7 @@ type StoryWithUser = Story & {
     user: User;
 };
 
+
 const StoryList = ({
     stories,
     userId,

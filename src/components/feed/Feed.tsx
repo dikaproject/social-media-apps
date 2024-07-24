@@ -7,6 +7,7 @@ const Feed = async ({ username }: { username?: string }) => {
 
     let posts: any[] = [];
 
+    // Fetch posts by username if provided
     if (username) {
         posts = await prisma.post.findMany({
             where: {
@@ -33,25 +34,9 @@ const Feed = async ({ username }: { username?: string }) => {
         });
     }
 
-    if (!username && userId) {
-        const following = await prisma.follower.findMany({
-            where: {
-                followerId: userId,
-            },
-            select: {
-                followingId: true,
-            },
-        });
-
-        const followingIds = following.map((f) => f.followingId);
-        const ids = [userId, ...followingIds]
-
+    // Fetch posts from all users if no username is provided
+    if (!username) {
         posts = await prisma.post.findMany({
-            where: {
-                userId: {
-                    in: ids,
-                },
-            },
             include: {
                 user: true,
                 likes: {
@@ -70,12 +55,17 @@ const Feed = async ({ username }: { username?: string }) => {
             },
         });
     }
+
     return (
         <div className="p-4 bg-white shadow-md rounded-lg flex flex-col gap-12">
-      {posts.length ? (posts.map(post=>(
-        <Post key={post.id} post={post}/>
-      ))) : "No posts found!"}
-    </div>
+            {posts.length ? (
+                posts.map(post => (
+                    <Post key={post.id} post={post} />
+                ))
+            ) : (
+                "No posts found!"
+            )}
+        </div>
     );
 };
 

@@ -1,6 +1,7 @@
 import prisma from '@/lib/client';
 import { auth } from '@clerk/nextjs/server';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const ProfileCard = async () => {
     const { userId } = auth();
@@ -21,6 +22,9 @@ const ProfileCard = async () => {
     })
 
     if(!user) return null;
+
+     // Check if the user is the special user
+     const isSpecialUser = user.id === 'user_2jY39fRo2jHDizfqQkFyFjmgWAG' || user.username === 'dikadev';
     return (
         <div className="p-6 bg-white rounded-lg shadow-md text-sm flex flex-col gap-8">
             <div className="h-20 relative">
@@ -34,9 +38,14 @@ const ProfileCard = async () => {
                     </div>
                     <span className="text-xs text-slate-500">{user._count.followers} Folllowers</span>
                     {/* Icons Image Centang Biru */}
-                    <Image src="/centang-biru.jpg" alt="alt" width={12} height={12} className='rounded-full object-cover w-3 h-3' />
+                     {isSpecialUser && (
+                            <Image src="/centang-biru.jpg" alt="verified" width={12} height={12} className='rounded-full object-cover w-3 h-3' />
+                        )}
                 </div>
-                <button className='bg-purple-500 text-white text-xs p-2 rounded-md'>My Profile</button>
+                {/* logika button to profile */}
+                <Link href={`/profile/${user.username}`}>
+                    <button className='bg-purple-500 text-white text-xs p-2 rounded-md'>My Profile</button>
+                </Link>
             </div>
         </div>
     );

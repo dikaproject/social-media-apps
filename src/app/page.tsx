@@ -12,7 +12,9 @@ const Homepage = () => {
         <div className="flex flex-col gap-6">
           <Stories/>
           <AddPost/>
-          <Feed/>
+          <div className="pb-28">
+            <Feed/>
+          </div>
         </div>
       </div>
       <div className="hidden lg:block w-[30%]"><RightMenu/></div>

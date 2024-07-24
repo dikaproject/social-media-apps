@@ -18,8 +18,6 @@ const FriendRequests = async () => {
         },
     });
 
-    if (requests.length === 0) return null;
-
     return (
         <div className="p-4 bg-white rounded-lg shadow-md text-sm flex flex-col gap-4">
             {/* TOP */}
@@ -28,7 +26,13 @@ const FriendRequests = async () => {
                 <Link href="/" className="text-purple-600 text-xs">See All</Link>
             </div>
             {/* Bottom */}
-            <FriendRequestList requests={requests} />
+            {requests.length === 0 ? (
+                <div className="text-center text-gray-500">
+                    Friend Request Not Found
+                </div>
+            ) : (
+                <FriendRequestList requests={requests} />
+            )}
         </div>
     );
 }

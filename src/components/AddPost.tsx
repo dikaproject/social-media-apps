@@ -12,11 +12,18 @@ const AddPost = () => {
     const { user, isLoaded } = useUser();
     const [desc, setDesc] = useState("");
     const [img, setImg] = useState<any>();
+    const [showPicker, setShowPicker] = useState(false);
 
     if (!isLoaded) {
         return "Loading...";
     }
 
+    const emojis = ["😀", "😂", "😍", "😭", "😎", "😢", "😡", "👍", "👎", "🙏", "💪", "👌", "💯", "🔥"];
+
+    const addEmoji = (emoji) => {
+        setDesc((prevDesc) => prevDesc + emoji);
+        setShowPicker(false); // Hide the picker after selecting an emoji
+    };
 
     return (
         <div className="p-4 bg-white shadow-md rounded-lg flex gap-4 justify-between text-sm">
@@ -36,16 +43,31 @@ const AddPost = () => {
                         placeholder="What's on your mind?"
                         className="flex-1 bg-slate-100 rounded-lg p-2"
                         name="desc"
+                        value={desc}
                         onChange={(e) => setDesc(e.target.value)}
                     ></textarea>
                     <div className="">
-                        <Image
+                    <Image
                             src="/emoji.png"
                             alt=""
                             width={20}
                             height={20}
                             className="w-5 h-5 cursor-pointer self-end"
+                            onClick={() => setShowPicker(!showPicker)}
                         />
+                        {showPicker && (
+                            <div className="absolute bg-white shadow-md rounded-lg p-2 flex flex-wrap gap-2">
+                                {emojis.map((emoji, index) => (
+                                    <span
+                                        key={index}
+                                        className="cursor-pointer text-lg"
+                                        onClick={() => addEmoji(emoji)}
+                                    >
+                                        {emoji}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
                         <AddPostButton />
                     </div>
                 </form>
